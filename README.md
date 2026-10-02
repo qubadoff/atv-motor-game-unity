@@ -1,74 +1,74 @@
-# Old Atv Motor (BurnGame)
+# Old ATV Motor (BurnGame)
 
-Proje klasoru `burngetter` adini tasir; oyunun adi **Old Atv Motor**, yapimci **BurnGame**.
+The project folder is named `burngetter`; the game is **Old ATV Motor**, by **BurnGame**.
 
-Siyah-beyaz, 2D ATV surus oyunu (Unity 6.3 LTS). 50 seviye, zamana karsi yaris: bitis bayragina ulas, hedef surenin altinda kalirsan 3 yildiz.
-Kaskin yere degerse devrilirsin. Ilk seviyeden itibaren tumsekler ve cukurlar var; havada gazi birakmazsan sirt ustu dusersin.
+A black-and-white 2D ATV riding game (Unity 6.3 LTS). 50 levels, racing against the clock: reach the finish flag, and beat the target time for 3 stars.
+Touch the ground with your helmet and you crash. Bumps and dips start from level one; let off the throttle in the air or you'll land on your back.
 
-## Yildizlar
-- 3 yildiz: `length / parSpeed` saniyenin altinda (`LevelConfig.ThreeStarTime`), 2 yildiz: bunun 1.45 kati, 1 yildiz: bitirmek.
-- HUD'daki sayac altinda canli hedef: sure hedefi gectikce yildizlar soner.
-- Kalibrasyon: kazasiz suren test botu (PlaytestRunner) 1. seviyeyi ~58 sn'de bitirir (3 yildiz siniri 64 sn). Duz gaz basan bot (`BURN_BOT=dumb`) 15. saniyede devrilir.
+## Stars
+- 3 stars: under `length / parSpeed` seconds (`LevelConfig.ThreeStarTime`); 2 stars: within 1.45× of that; 1 star: just finish.
+- A live target sits under the HUD timer: stars fade out as the clock passes each threshold.
+- Calibration: the crash-free test bot (PlaytestRunner) finishes level 1 in ~58 s (the 3-star line is 64 s). The full-throttle bot (`BURN_BOT=dumb`) flips over at second 15.
 
-## Akis
-0. **Splash sahnesi**: BurnGame logosu (lastik icinde alev) ve yazi, ~2.5 sn sonra menuye gecer (dokununca atlanir).
-1. **Menu sahnesi**: ilk aciliste isim sorar, sonra OYNA (50 seviye, 1 acik digerleri kilitli) ve AYARLAR (dil, muzik, ses) sekmeleri.
-2. **Game sahnesi**: secili seviyeyi oynatir. Bitis bayragina ulasinca sonraki seviye acilir, en iyi sure kaydedilir.
-   Surus sirasinda gokyuzunde motivasyon cumleleri belirir (her turda 4), bulutlar ve kus suruleri gecer.
+## Flow
+0. **Splash scene**: the BurnGame logo (a flame inside a tire) and wordmark; cuts to the menu after ~2.5 s (tap to skip).
+1. **Menu scene**: asks for a name on first launch, then PLAY (50 levels, 1 unlocked, the rest locked) and SETTINGS (language, music, sound) tabs.
+2. **Game scene**: runs the selected level. Reaching the finish flag unlocks the next level and records your best time.
+   Motivational quotes appear in the sky while you ride (4 per run), with clouds and flocks of birds drifting past.
 
-## Diller
-Azerbaycanca, Ingilizce, Rusca, Turkce. Varsayilan **Otomatik**: cihaz dili (`Loc.DetectDeviceLanguage`, once isletim sistemi yerel ayari, sonra Unity systemLanguage).
-Ayarlardan sabit bir dil secilebilir; "Otomatik" secilince tekrar cihaz diline doner.
-Metinler `Assets/Scripts/Loc.cs`, motivasyon cumleleri `Assets/Scripts/Quotes.cs` icinde.
+## Languages
+Azerbaijani, English, Russian, Turkish. The default is **Auto**: the device language (`Loc.DetectDeviceLanguage` — OS locale first, then Unity's systemLanguage).
+A fixed language can be chosen in Settings; picking "Auto" returns to the device language.
+Strings live in `Assets/Scripts/Loc.cs`, the motivational quotes in `Assets/Scripts/Quotes.cs`.
 
-## Muzik
-`Assets/Audio/Music` altindaki parcalar Kevin MacLeod'a aittir (CC BY 4.0), bkz. `CREDITS.md`. Menu sahnesindeki `MusicPlayer` sahneler arasi yasar ve karisik sirayla calar.
+## Music
+The tracks under `Assets/Audio/Music` are by Kevin MacLeod (CC BY 4.0), see `CREDITS.md`. The menu scene's `MusicPlayer` survives scene changes and shuffles the playlist.
 
-## Kontroller
-- **Gaz:** Sag ok / D / W, dokunmatikte ekranin sag yarisi
-- **Fren / geri:** Sol ok / A / S, dokunmatikte sol yarisi
-- Havada gaz burnu kaldirir, fren burnu indirir.
-- Oyun sonu: **Tekrar dene** (R / Space) veya **Menu** (Esc). Seviye sonu: **Sonraki level** (Space).
+## Controls
+- **Throttle:** Right arrow / D / W; the right half of the screen on touch
+- **Brake / reverse:** Left arrow / A / S; the left half on touch
+- In the air, throttle lifts the nose and brake drops it.
+- Game over: **Retry** (R / Space) or **Menu** (Esc). Level complete: **Next level** (Space).
 
-## Proje yapisi
+## Project layout
 - `Assets/Scenes/Menu.unity`, `Assets/Scenes/Game.unity`
-- `Assets/Scripts/AtvController.cs` — motor, fren, egilme, anti-takla, giris
-- `Assets/Scripts/EngineAudio.cs` — kodla sentezlenen motor sesi (ses dosyasi yok)
-- `Assets/Scripts/Levels.cs` — 50 seviyenin zorluk egrisi ve `LevelSession`
-- `Assets/Scripts/PlayerProfile.cs` — isim, acik seviye, en iyi sureler (PlayerPrefs)
-- `Assets/Scripts/TerrainGenerator.cs` — seviyeye gore arazi (Perlin + tumsekler), bitisten sonra duzlesir
-- `Assets/Scripts/GameManager.cs` — HUD, bitis bayragi, seviye tamamlama, oyun sonu
-- `Assets/Scripts/MenuController.cs` — isim ekrani, OYNA/AYARLAR sekmeleri (arayuz kodla kurulur)
-- `Assets/Scripts/Loc.cs`, `Quotes.cs`, `Settings.cs`, `MusicPlayer.cs` — dil, sozler, ayarlar, muzik
-- `Assets/Scripts/QuoteDisplay.cs`, `SkyDecor.cs` — gokyuzu sozleri, bulut ve kuslar
-- `Assets/Editor/SpriteFactory.cs` — ATV, tekerlek, bayrak, kilit, bulut, kus sprite'larini kodla cizer (onizleme: `Previews/atv_preview.png`)
-- `Assets/Editor/TerrainAudit.cs` — seviyelerin azami egimini olcer (menu: **BurnGetter > Terrain Audit**)
-- `Assets/Editor/SceneBuilder.cs` — iki sahneyi sifirdan kurar (menu: **BurnGetter > Build Game Scenes**)
-- `Assets/Editor/PlaytestRunner.cs` — komut satirindan otomatik surus testi
+- `Assets/Scripts/AtvController.cs` — engine, brakes, lean, anti-flip, input
+- `Assets/Scripts/EngineAudio.cs` — engine sound synthesized in code (no audio files)
+- `Assets/Scripts/Levels.cs` — the 50-level difficulty curve and `LevelSession`
+- `Assets/Scripts/PlayerProfile.cs` — name, unlocked levels, best times (PlayerPrefs)
+- `Assets/Scripts/TerrainGenerator.cs` — per-level terrain (Perlin + bumps), flattens after the finish
+- `Assets/Scripts/GameManager.cs` — HUD, finish flag, level completion, game over
+- `Assets/Scripts/MenuController.cs` — name screen, PLAY/SETTINGS tabs (UI built in code)
+- `Assets/Scripts/Loc.cs`, `Quotes.cs`, `Settings.cs`, `MusicPlayer.cs` — language, quotes, settings, music
+- `Assets/Scripts/QuoteDisplay.cs`, `SkyDecor.cs` — sky quotes, clouds and birds
+- `Assets/Editor/SpriteFactory.cs` — draws the ATV, wheel, flag, lock, cloud and bird sprites in code (preview: `Previews/atv_preview.png`)
+- `Assets/Editor/TerrainAudit.cs` — measures each level's maximum slope (menu: **BurnGetter > Terrain Audit**)
+- `Assets/Editor/SceneBuilder.cs` — builds both scenes from scratch (menu: **BurnGetter > Build Game Scenes**)
+- `Assets/Editor/PlaytestRunner.cs` — automated ride test from the command line
 
-## Komut satiri
+## Command line
 ```
 UNITY="/Applications/Unity/Hub/Editor/6000.3.23f1/Unity.app/Contents/MacOS/Unity"
-# Sprite'lari ve sahneleri sifirdan kur (editor kapali olmali)
+# Rebuild sprites and scenes from scratch (the editor must be closed)
 "$UNITY" -batchmode -projectPath "$PWD" -executeMethod SceneBuilder.Build -quit -logFile build.log
-# Otomatik test: bitise kadar surus (akilli bot), secili seviyede; BURN_BOT=dumb ile sadece-gaz botu
+# Automated test: ride to the finish (smart bot) on the chosen level; BURN_BOT=dumb for the throttle-only bot
 BURN_LEVEL=25 "$UNITY" -batchmode -projectPath "$PWD" -executeMethod PlaytestRunner.Run -logFile playtest.log
-# Menu sahnesi: her dil x (isim, oyna, ayarlar) sayfalarinda metin tasma/binme denetimi (UiAudit)
+# Menu scene: text overflow/overlap audit across every language x (name, play, settings) page (UiAudit)
 BURN_SCENE=Menu "$UNITY" -batchmode -projectPath "$PWD" -executeMethod PlaytestRunner.Run -logFile menu.log
 ```
-Not: Script varsayilanlarini degistirince sahnedeki kayitli degerler guncellenmez; `SceneBuilder.Build` ile sahneyi yeniden kurun.
+Note: changing a script's defaults does not update values already saved in a scene; rebuild the scenes with `SceneBuilder.Build`.
 
 ## Android APK
 ```
 "$UNITY" -batchmode -buildTarget Android -projectPath "$PWD" -executeMethod BuildScript.BuildAndroid -quit -logFile android.log
 ```
-Cikti: `Builds/Android/OldAtvMotor.apk` (IL2CPP, ARM64 + ARMv7, minSdk 24). Menu: **BurnGetter > Build Android APK**.
+Output: `Builds/Android/OldAtvMotor.apk` (IL2CPP, ARM64 + ARMv7, minSdk 24). Menu: **BurnGetter > Build Android APK**.
 
-## Uygulama kimligi
-- iOS: `org.burngame.atv-motor`, Android: `org.burngame.atvmotor` (Android paket adinda tire gecersiz), sirket: BurnGame.
-- Uygulama ikonu `Assets/Sprites/logo.png`; Unity acilis logosu kapali (Unity 6'da tum lisanslarda serbest).
+## App identity
+- iOS: `org.burngame.atv-motor`, Android: `org.burngame.atvmotor` (a hyphen is invalid in an Android package name); company: BurnGame.
+- The app icon is `Assets/Sprites/logo.png`; the Unity splash logo is off (free on every license since Unity 6).
 
-## Ayar onerileri
-- Fizik: `ATV` nesnesinde `AtvController` — `motorTorque`, `maxSpeed`, `airTorque`, `antiFlipAngle`
-- Zorluk egrisi: `Assets/Scripts/Levels.cs` icindeki `Levels.Get`
-- Ses: `ATV` nesnesinde `EngineAudio` — `idlePitch`, `maxPitch`, `throttleVolume`
+## Tuning tips
+- Physics: `AtvController` on the `ATV` object — `motorTorque`, `maxSpeed`, `airTorque`, `antiFlipAngle`
+- Difficulty curve: `Levels.Get` in `Assets/Scripts/Levels.cs`
+- Audio: `EngineAudio` on the `ATV` object — `idlePitch`, `maxPitch`, `throttleVolume`
