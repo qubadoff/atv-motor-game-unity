@@ -1,0 +1,23 @@
+# Unity generated
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Ll]ogs/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+[Bb]uild/
+[Bb]uilds/
+UserSettings/
+# IDE / OS
+.vs/
+.idea/
+.vscode/
+*.csproj
+*.sln
+.DS_Store
+# Crash reports / packages
+sysinfo.txt
+*.apk
+*.aab
+*.unitypackage
+crashlytics-build.properties
